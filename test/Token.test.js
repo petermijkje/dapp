@@ -4,7 +4,7 @@ require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-contract('Token', (accounts) => {
+contract('Token', ([deployer, sender, receiver]) => {
     let token 
     const name = "Token"
     const symbol = "LCA"
@@ -42,6 +42,10 @@ contract('Token', (accounts) => {
         it('returns the correct token version', async () => {
             const result = await token.standard()
             result.should.equal(standard)
+        })
+        it('assigns the total supply to the deployer', async () => {
+            const result = await token.balanceOf(deployer)
+            result.toString().should.equal(totalSupply)
         })
     })
 })
