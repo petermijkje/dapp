@@ -4,12 +4,18 @@ require('chai')
     .use(require('chai-as-promised'))
     .should()
 
+const tokens = (n) => {
+    return web3.utils.BN(
+    web3.utils.toWei(n.toString(), 'ether')
+    )
+}
+
 contract('Token', ([deployer, sender, receiver]) => {
     let token 
     const name = "Token"
     const symbol = "LCA"
     const decimals = '18'
-    const totalSupply = '1000000000000000000000000'
+    const totalSupply = tokens(1000000).toString()
     const standard = "Token v1.0.0"
 
 
@@ -56,13 +62,18 @@ contract('Token', ([deployer, sender, receiver]) => {
             // let balanceOfReceiver
 
             let balanceOfDeployer = await token.balanceOf(deployer);
-            console.log('deployer balance: ', balanceOfDeployer)
+            console.log('deployer balance: ', balanceOfDeployer.toString())
             let balanceOfReceiver = await token.balanceOf(receiver);
-            console.log('receiver balance: ', balanceOfReceiver)
+            console.log('receiver balance: ', balanceOfReceiver.toString())
 
             // transfer 
+            await token.transfer(receiver, tokens(100), {from: deployer})
 
             //after transfer
+            let balanceOfDeployerFinal = await token.balanceOf(deployer.toString());
+            console.log('deployer balance: ', balanceOfDeployerFinal)
+            let balanceOfReceiverFinal = await token.balanceOf(receiver);
+            console.log('receiver balance: ', balanceOfReceiverFinal.toString())
         })
     })
 })
