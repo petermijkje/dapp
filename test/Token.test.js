@@ -48,4 +48,21 @@ contract('Token', ([deployer, sender, receiver]) => {
             result.toString().should.equal(totalSupply)
         })
     })
+
+    describe('sending tokens', () => {
+        it('transfers token balance', async () => {
+            // before transfer
+            // let balanceOfDeployer
+            // let balanceOfReceiver
+
+            let balanceOfDeployer = await token.balanceOf(deployer);
+            console.log('deployer balance: ', balanceOfDeployer)
+            let balanceOfReceiver = await token.balanceOf(receiver);
+            console.log('receiver balance: ', balanceOfReceiver)
+
+            // transfer 
+
+            //after transfer
+        })
+    })
 })
