@@ -2,16 +2,16 @@ const Token = artifacts.require("./Token");
 
 require("chai").use(require("chai-as-promised")).should();
 
-const tokens = (n) => {
-  return web3.utils.BN(web3.utils.toWei(n.toString(), "ether"));
-};
+// const tokens = (n) => {
+//   return web3.utils.BN(web3.utils.toWei(n.toString(), "ether"));
+// };
 
 contract("Token", ([deployer, sender, receiver]) => {
   let token;
   const name = "Token";
   const symbol = "LCA";
   const decimals = "18";
-  const totalSupply = tokens(1000000).toString();
+  const totalSupply = '1000000000000000000000000';
   const standard = "Token v1.0.0";
 
   beforeEach(async () => {
@@ -50,24 +50,24 @@ contract("Token", ([deployer, sender, receiver]) => {
     });
   });
 
-  // describe('sending tokens', () => {
-  //     it('transfers token balance', async () => {
-  //         // before transfer
-  //         let balanceOf
+  describe("sending tokens", () => {
+    it("transfers token balance", async () => {
+      // before transfer
+      let balanceOf;
 
-  //         balanceOf = await token.balanceOf(deployer);
-  //         console.log('deployer balance: ', balanceOf.toString())
-  //         balanceOf = await token.balanceOf(receiver);
-  //         console.log('receiver balance: ', balanceOf.toString())
+      balanceOf = await token.balanceOf(deployer);
+      console.log("deployer balance: ", balanceOf.toString());
+      balanceOf = await token.balanceOf(receiver);
+      console.log("receiver balance: ", balanceOf.toString());
 
-  //         // transfer
-  //         await token.transfer(receiver, tokens(100), {from: deployer})
+      // transfer
+    //   await token.transfer(receiver, 1000000000000000000000000, { from: deployer });
 
-  //         //after transfer
-  //         balanceOf = await token.balanceOf(deployer.toString());
-  //         console.log('deployer balance: ', balanceOf)
-  //         balanceOf = await token.balanceOf(receiver);
-  //         console.log('receiver balance: ', balanceOf.toString())
-  //     })
-  // })
+      //after transfer
+      balanceOf = await token.balanceOf(deployer.toString());
+      console.log("deployer balance: ", balanceOf);
+      balanceOf = await token.balanceOf(receiver);
+      console.log("receiver balance: ", balanceOf.toString());
+    });
+  });
 });
