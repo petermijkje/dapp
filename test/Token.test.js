@@ -2,16 +2,18 @@ const Token = artifacts.require("./Token");
 
 require("chai").use(require("chai-as-promised")).should();
 
-// const tokens = (n) => {
-//   return web3.utils.BN(web3.utils.toWei(n.toString(), "ether"));
-// };
+const tokens = (n) => {
+  return new web3.utils.BN(
+    web3.utils.toWei(n.toString(), "ether")
+    );
+};
 
 contract("Token", ([deployer, sender, receiver]) => {
   let token;
   const name = "Token";
   const symbol = "LCA";
   const decimals = "18";
-  const totalSupply = '1000000000000000000000000';
+  const totalSupply = tokens(1000000);
   const standard = "Token v1.0.0";
 
   beforeEach(async () => {
@@ -37,7 +39,7 @@ contract("Token", ([deployer, sender, receiver]) => {
 
     it("it should return the correct total supply", async () => {
       const result = await token.totalSupply();
-      result.toString().should.equal(totalSupply);
+      result.toString().should.equal(totalSupply.toString());
     });
 
     it("returns the correct token version", async () => {
@@ -46,7 +48,7 @@ contract("Token", ([deployer, sender, receiver]) => {
     });
     it("assigns the total supply to the deployer", async () => {
       const result = await token.balanceOf(deployer);
-      result.toString().should.equal(totalSupply);
+      result.toString().should.equal(totalSupply.toString());
     });
   });
 

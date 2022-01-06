@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Token {
-    // using SafeMath for uint256;
+    using SafeMath for uint256;
 
     string public name = "Token";
     string public symbol = "LCA";
@@ -22,9 +22,9 @@ contract Token {
         balanceOf[msg.sender] = totalSupply;
     }
 
-    // function transfer(address _to, uint256 _value) public returns (bool success) {
-    //     // balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
-    //     // balanceOf[_to] = balanceOf[_to].add(_value);
-    //     return true;
-    // }
+    function transfer(address _to, uint256 _value) public returns (bool success) {
+        balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
+        balanceOf[_to] = balanceOf[_to].add(_value);
+        return true;
+    }
 }
