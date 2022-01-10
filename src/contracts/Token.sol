@@ -14,8 +14,8 @@ contract Token {
 
     //track balances
     mapping(address => uint256) public balanceOf;
-    //send tokens
 
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
     constructor() public {
         totalSupply = 1000000 * (10 ** decimals);
@@ -25,6 +25,7 @@ contract Token {
     function transfer(address _to, uint256 _value) public returns (bool success) {
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
         balanceOf[_to] = balanceOf[_to].add(_value);
+        emit Transfer(msg.sender, _to, _value);
         return true;
     }
 }
