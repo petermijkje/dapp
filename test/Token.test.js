@@ -68,6 +68,12 @@ contract("Token", ([deployer, sender, receiver]) => {
     it("triggers a transfer event", async () => {
       const log = result.logs[0];
       log.event.should.equal("Transfer");
+      const event = log.args;
+      event.from.toString().should.equal(deployer, "from is correct");
+      event.to.should.equal(receiver, "to is correct");
+      event.value
+        .toString()
+        .should.equal(amount.toString(), "value is correct");
     });
   });
 });
