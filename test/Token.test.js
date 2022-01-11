@@ -1,8 +1,7 @@
-import { tokens } from './helpers'
+import { tokens } from "./helpers";
 const Token = artifacts.require("./Token");
 
 require("chai").use(require("chai-as-promised")).should();
-
 
 contract("Token", ([deployer, sender, receiver]) => {
   let token;
@@ -49,25 +48,26 @@ contract("Token", ([deployer, sender, receiver]) => {
   });
 
   describe("sending tokens", () => {
-    let result
-    let amount
+    let result;
+    let amount;
 
     beforeEach(async () => {
-      amount = tokens(100)
+      amount = tokens(100);
       result = await token.transfer(receiver, amount, { from: deployer });
-    })
+    });
 
     it("transfers token balance", async () => {
       let balanceOf;
 
       balanceOf = await token.balanceOf(deployer);
-      balanceOf.toString().should.equal(tokens(999900).toString())
+      balanceOf.toString().should.equal(tokens(999900).toString());
       balanceOf = await token.balanceOf(receiver);
-      balanceOf.toString().should.equal(tokens(100).toString())
+      balanceOf.toString().should.equal(tokens(100).toString());
     });
 
-    it('triggers a transfer event', async () => {
-      console.log(result)    
-    })
+    it("triggers a transfer event", async () => {
+      const log = result.logs[0];
+      log.event.should.equal("Transfer");
+    });
   });
 });
