@@ -51,29 +51,43 @@ contract("Token", ([deployer, sender, receiver]) => {
     let result;
     let amount;
 
-    beforeEach(async () => {
-      amount = tokens(100);
-      result = await token.transfer(receiver, amount, { from: deployer });
+    describe("success", () => {
+      beforeEach(async () => {
+        amount = tokens(100);
+        result = await token.transfer(receiver, amount, { from: deployer });
+      });
+
+      it("transfers token balance", async () => {
+        let balanceOf;
+
+        balanceOf = await token.balanceOf(deployer);
+        balanceOf.toString().should.equal(tokens(999900).toString());
+        balanceOf = await token.balanceOf(receiver);
+        balanceOf.toString().should.equal(tokens(100).toString());
+      });
+
+      it("triggers a transfer event", async () => {
+        const log = result.logs[0];
+        log.event.should.equal("Transfer");
+        const event = log.args;
+        event.from.toString().should.equal(deployer, "from is correct");
+        event.to.should.equal(receiver, "to is correct");
+        event.value
+          .toString()
+          .should.equal(amount.toString(), "value is correct");
+      });
     });
 
-    it("transfers token balance", async () => {
-      let balanceOf;
-
-      balanceOf = await token.balanceOf(deployer);
-      balanceOf.toString().should.equal(tokens(999900).toString());
-      balanceOf = await token.balanceOf(receiver);
-      balanceOf.toString().should.equal(tokens(100).toString());
-    });
-
-    it("triggers a transfer event", async () => {
-      const log = result.logs[0];
-      log.event.should.equal("Transfer");
-      const event = log.args;
-      event.from.toString().should.equal(deployer, "from is correct");
-      event.to.should.equal(receiver, "to is correct");
-      event.value
-        .toString()
-        .should.equal(amount.toString(), "value is correct");
+    describe("failure", () => {
+      it("rejects wallets with insufficient balances", async () => {
+        let invalidAmount;
+        invalidAmount = tokens(10000000000);
+        await token
+          .transfer(receiver, invalidAmount, { from: deployer })
+          .should.be.rejectedWith(
+            "VM Exception while processing transaction: revert"
+          );
+      });
     });
   });
 });
