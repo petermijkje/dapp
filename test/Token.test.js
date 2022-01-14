@@ -16,6 +16,7 @@ contract("Token", ([deployer, sender, receiver]) => {
   });
 
   describe("deployment", () => {
+    
     it("tracks the name", async () => {
       // read token and check it
       const result = await token.name();
@@ -41,17 +42,20 @@ contract("Token", ([deployer, sender, receiver]) => {
       const result = await token.standard();
       result.should.equal(standard);
     });
+
     it("assigns the total supply to the deployer", async () => {
       const result = await token.balanceOf(deployer);
       result.toString().should.equal(totalSupply.toString());
     });
+
   });
 
   describe("sending tokens", () => {
     let result;
     let amount;
 
-    describe("success", () => {
+  describe("success", () => {
+      
       beforeEach(async () => {
         amount = tokens(100);
         result = await token.transfer(receiver, amount, { from: deployer });
@@ -79,6 +83,7 @@ contract("Token", ([deployer, sender, receiver]) => {
     });
 
     describe("failure", () => {
+
       it("rejects wallets with insufficient balances", async () => {
         let invalidAmount;
         invalidAmount = tokens(10000000000);
@@ -94,6 +99,13 @@ contract("Token", ([deployer, sender, receiver]) => {
             EVM_REVERT
           );
       });
+
+      it("rejects invalid recipient", async () => {
+        await token
+          .transfer(0x0, amount, { from: deployer })
+          .should.be.rejected
+      })
+
     });
   });
 });
