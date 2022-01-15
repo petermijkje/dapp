@@ -10,9 +10,10 @@ contract("Exchange", ([deployer, feeAccount, receiver]) => {
   const decimals = "18";
   const totalSupply = tokens(1000000);
   const standard = "Token v1.0.0";
+  const feePercent = 10;
 
   beforeEach(async () => {
-    exchange = await Exchange.new(feeAccount);
+    exchange = await Exchange.new(feeAccount, feePercent);
   });
 
   describe("deployment", () => {
@@ -39,6 +40,10 @@ contract("Exchange", ([deployer, feeAccount, receiver]) => {
     it('tracks the fee account', async () => {
         const result = await exchange.feeAccount();
         result.should.equal(feeAccount)
+    })
+        it('tracks the fee amount', async () => {
+        const result = await exchange.feePercent();
+        result.toString().should.equal(feePercent.toString())
     })
   });
 });
