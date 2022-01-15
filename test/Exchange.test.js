@@ -3,8 +3,8 @@ const Exchange = artifacts.require("./Exchange");
 
 require("chai").use(require("chai-as-promised")).should();
 
-contract("Exchange", ([deployer, sender, receiver]) => {
-  let token;
+contract("Exchange", ([deployer, feeAccount, receiver]) => {
+  let exchange;
   const name = "Exchange";
   const symbol = "LCA";
   const decimals = "18";
@@ -12,29 +12,33 @@ contract("Exchange", ([deployer, sender, receiver]) => {
   const standard = "Token v1.0.0";
 
   beforeEach(async () => {
-    token = await Exchange.new();
+    exchange = await Exchange.new();
   });
 
   describe("deployment", () => {
     
     it("tracks the name", async () => {
-      const result = await token.name();
+      const result = await exchange.name();
       result.should.equal(name);
     });
 
     it("tracks the symbol", async () => {
-      const result = await token.symbol();
+      const result = await exchange.symbol();
       result.should.equal(symbol);
     });
 
     it("returns the correct decimal number", async () => {
-      const result = await token.decimals();
+      const result = await exchange.decimals();
       result.toString().should.equal(decimals);
     });
 
     it("returns the correct token version", async () => {
-      const result = await token.standard();
+      const result = await exchange.standard();
       result.should.equal(standard);
     });
+    it('tracks the fee account', async () => {
+        const result = await exchange.feeAccount();
+        result.should.equal(feeAccount)
+    })
   });
 });
