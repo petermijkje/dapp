@@ -12,7 +12,7 @@ contract("Exchange", ([deployer, feeAccount, receiver]) => {
   const standard = "Token v1.0.0";
 
   beforeEach(async () => {
-    exchange = await Exchange.new();
+    exchange = await Exchange.new(feeAccount);
   });
 
   describe("deployment", () => {
