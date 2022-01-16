@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import './token.sol';
+
 contract Exchange {
 
     string public name = "Exchange";
@@ -15,10 +17,12 @@ contract Exchange {
     mapping(address => uint256) public balanceOf;
 
     constructor(address _feeAccount, uint256 _feePercent) public {
-        // totalSupply = 1000000 * (10 ** decimals);
-        // balanceOf[msg.sender] = totalSupply;
         feeAccount = _feeAccount;
         feePercent = _feePercent;
+    }
+
+    function depositToken(address _token, uint256 _amount) public {
+        Token(_token).transferFrom(msg.sender, address(this, _amount));
     }
 
 }
