@@ -1,10 +1,13 @@
 import { tokens, EVM_REVERT } from "./helpers";
 const Exchange = artifacts.require("./Exchange");
+const Token = artifacts.require("./Token");
+
 
 require("chai").use(require("chai-as-promised")).should();
 
-contract("Exchange", ([deployer, feeAccount, receiver]) => {
+contract("Exchange", ([deployer, feeAccount, user1]) => {
   let exchange;
+  let token;
   const name = "Exchange";
   const symbol = "LCA";
   const decimals = "18";
@@ -13,6 +16,7 @@ contract("Exchange", ([deployer, feeAccount, receiver]) => {
   const feePercent = 10;
 
   beforeEach(async () => {
+    token = await Token.new();
     exchange = await Exchange.new(feeAccount, feePercent);
   });
 
@@ -46,4 +50,29 @@ contract("Exchange", ([deployer, feeAccount, receiver]) => {
         result.toString().should.equal(feePercent.toString())
     })
   });
+
+  describe("depositing tokens", () => {
+      let result;
+      let amount;
+
+      beforeEach( async () => {
+        amount = tokens(10)
+        await token.approve(transfer.address, amount, {from: user1})
+        result = await exchange.depositToken(token.address, amount, {from: user1})
+      })
+
+      describe("success", () => {
+          it("tracks the deposit of a token", async () =>{
+              let balance;
+              balance = await token.balanceOf(exchange.address);
+              balance.toString().should.equal(amount.toString());
+          })
+      })
+
+      describe("Failure", () => {
+          it("tracks the deposit of a token", async () =>{
+              
+          })
+      })
+  })
 });
