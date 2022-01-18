@@ -41,5 +41,8 @@ contract Token {
         return true;
     }
     //Transfer From
+        function transferFrom(address from, address _to, uint256 _value) public returns (bool success) {
+        
+        }
 
 }
