@@ -50,29 +50,4 @@ contract("Exchange", ([deployer, feeAccount, user1]) => {
         result.toString().should.equal(feePercent.toString())
     })
   });
-
-//   describe("depositing tokens", () => {
-//       let result;
-//       let amount;
-
-//       beforeEach( async () => {
-//         amount = tokens(10)
-//         await token.approve(transfer.address, amount, {from: user1})
-//         result = await exchange.depositToken(token.address, amount, {from: user1})
-//       })
-
-//       describe("success", () => {
-//           it("tracks the deposit of a token", async () =>{
-//               let balance;
-//               balance = await token.balanceOf(exchange.address);
-//               balance.toString().should.equal(amount.toString());
-//           })
-//       })
-
-//       describe("Failure", () => {
-//           it("tracks the deposit of a token", async () =>{
-              
-//           })
-//       })
-//   })
 });
