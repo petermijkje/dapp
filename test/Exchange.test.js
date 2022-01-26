@@ -61,7 +61,7 @@ contract("Exchange", ([deployer, feeAccount, user1]) => {
     })
   })
 
-  describe("Depoisiting Ether", async () => {
+  describe("Depositing Ether", async () => {
     let result;
     let amount 
 
@@ -82,6 +82,29 @@ contract("Exchange", ([deployer, feeAccount, user1]) => {
         event.amount.toString().should.equal(amount.toString(), "amount is correct")
         event.balance.toString().should.equal(amount.toString(), "balance is correct")
       })
+  })
+
+  describe("withdrawing Ether", async () => {
+    let result;
+    let amount;
+
+    beforeEach( async () => {
+      amount = ether(1)
+      result = await exchange.depositEther({from: user1, value: amount})
+    })
+
+    describe("success", async () => {
+      beforeEach( async () => {
+        amount = ether(1)
+        result = await exchange.withdrawEther(amount, {from: user1})
+      })
+
+      it("withdraws ether funds", async () => {
+        const balance = await exchange.tokens(ETHER_ADDRESS, user1)
+        balance.toString().should.equal('0')
+      })
+    })
+
   })
 
   describe("Depositing Tokens", () => {
