@@ -170,5 +170,28 @@ contract("Exchange", ([deployer, feeAccount, user1]) => {
     })
   })
 
+  describe("Withdrawing Tokens", async () => {
+    let result;
+    let amount;
+
+    describe("Success", async () => {
+      beforeEach( async () => {
+        amount = tokens(10)
+        await token.approve(exchange.address, amount, {from: user1})
+        await exchange.depositToken(token.address, amount, {from: user1})
+      
+        result = await exchange.withdrawToken(token.address, amount, {from: user1})
+      })
+
+      it("Should withdraw token funds", async () => {
+        const balance = await exchange.tokens(token.address, user1)
+        balance.toString().should.equal("0")
+      })
+    })
+
+    describe("Failure", async () => {
+
+    }) 
+  })
 
 });
