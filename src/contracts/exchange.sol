@@ -20,10 +20,20 @@ contract Exchange {
 
     address constant ETHER = address(0); //store ether in tokens mapping with blank address
     mapping(address => mapping(address => uint256)) public tokens;
+    mapping(uint256 => _Order) public orders;
+    uint256 public orderCount;
 
     event Deposit(address token, address user, uint256 amount, uint256 balance);
     event Withdraw(address token, address user, uint amount, uint balance);
-
+    event Order(
+        uint id,
+        address user,
+        address tokenGet,
+        uint amountGet,
+        address tokenGive,
+        uint amountGive,
+        uint timestamp
+    )
 
     constructor(address _feeAccount, uint256 _feePercent) public {
         feeAccount = _feeAccount;
@@ -73,6 +83,12 @@ contract Exchange {
 
   function balanceOf(address _token, address _user) public view returns (uint256) {
         return tokens[_token][_user];
+    }
+
+    function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
+        orderCount = orderCount.add(1);
+        orders[orderCount] = _Order(_id, msg.sender _tokenGet, _amountGet, _tokenGive, _amountGive, now);
+
     }
 }
 
