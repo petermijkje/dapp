@@ -30,23 +30,33 @@ contract Exchange {
         feePercent = _feePercent;
     }
 
+    struct _Order {
+        uint id;
+        address user;
+        address tokenGet;
+        uint amountGet;
+        address tokenGive;
+        uint amountGive;
+        uint timestamp;
+    }
+
     fallback() external payable {
         revert();
     }
 
-    function depositEther() payable public {
+     function depositEther() payable public {
         tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender].add(msg.value);
         emit Deposit(ETHER, msg.sender, msg.value, tokens[ETHER][msg.sender]);
     }
 
-    function withdrawEther(uint256 _amount) public {
+    function withdrawEther(uint _amount) public {
         require(tokens[ETHER][msg.sender] >= _amount);
         tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender].sub(_amount);
         payable(msg.sender).transfer(_amount);
         emit Withdraw(ETHER, msg.sender, _amount, tokens[ETHER][msg.sender]);
     }
 
-    function depositToken(address _token, uint256 _amount) public {
+    function depositToken(address _token, uint _amount) public {
         require(_token != ETHER);
         require(Token(_token).transferFrom(msg.sender, address(this), _amount));
         tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_amount);
@@ -61,6 +71,9 @@ contract Exchange {
         emit Withdraw(_token, msg.sender, _amount, tokens[_token][msg.sender]);
     }
 
+  function balanceOf(address _token, address _user) public view returns (uint256) {
+        return tokens[_token][_user];
+    }
 }
 
 //to do
