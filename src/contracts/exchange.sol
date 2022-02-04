@@ -33,22 +33,23 @@ contract Exchange {
         address tokenGive,
         uint amountGive,
         uint timestamp
-    )
+    );
+
+    struct _Order {
+        uint256 id;
+        address user;
+        address tokenGet;
+        uint256 amountGet;
+        address tokenGive;
+        uint256 amountGive;
+        uint256 timestamp;
+    }
 
     constructor(address _feeAccount, uint256 _feePercent) public {
         feeAccount = _feeAccount;
         feePercent = _feePercent;
     }
 
-    struct _Order {
-        uint id;
-        address user;
-        address tokenGet;
-        uint amountGet;
-        address tokenGive;
-        uint amountGive;
-        uint timestamp;
-    }
 
     fallback() external payable {
         revert();
@@ -87,8 +88,8 @@ contract Exchange {
 
     function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
         orderCount = orderCount.add(1);
-        orders[orderCount] = _Order(_id, msg.sender _tokenGet, _amountGet, _tokenGive, _amountGive, now);
-
+        orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
+        emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
     }
 }
 
