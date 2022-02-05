@@ -208,7 +208,7 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 
   describe("making orders", async () => {
     let result;
-    
+
     beforeEach(async () => {
         // make order
         result = await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), { from: user1 })
@@ -216,6 +216,7 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
       it("tracks the newly created order", async () => {
         const orderCount = await exchange.orderCount()
         orderCount.toString().should.equal("1")
+        const order = await exchange.orders("1")
       }) 
   })
 
