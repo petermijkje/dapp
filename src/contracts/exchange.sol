@@ -91,6 +91,10 @@ contract Exchange {
         orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
         emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
     }
+
+    function cancelOrder(uint256 _id) {
+
+    }
 }
 
 //to do
@@ -101,6 +105,6 @@ contract Exchange {
 // deposit tokens
 // check balance
 // make order
-//cancel order
+// cancel order
 // fill order
 // charge fees
