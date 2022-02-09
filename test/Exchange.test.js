@@ -239,4 +239,29 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
       })
   })
 
+  describe("Order actions", async () => {
+      beforeEach(async () => {
+        // make order
+        await exchange.depositEther({from: user1, value: ether(1)})
+
+        await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), {from: user1})
+      })
+
+      describe("Cancelling orders", async () => {
+          let result;
+
+          describe("success", async () =>{
+              beforeEach(async () => {
+              // cancel order
+              result = await exchange.cancelOrder('1', {from: user1})
+              })
+
+              it("updates cancelled order", async () => {
+                const orderCancelled = await exchange.orderCancelled(1)
+                orderCancelled.should.equal(true)
+              })
+          })
+      })
+  })
+
 })
