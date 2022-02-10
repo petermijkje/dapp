@@ -7,7 +7,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('Exchange', ([deployer, feeAccount, user1]) => {
+contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
   let token
   let exchange
   const feePercent = 10
@@ -260,6 +260,17 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
                 const orderCancelled = await exchange.orderCancelled(1)
                 orderCancelled.should.equal(true)
               })
+          })
+
+          describe('failure', async () =>{
+            it('rejects invalid order ids', async () => {
+              const invalidOrderID = 9
+              
+              await exchange.cancelOrder(invalidOrderID, {from: user1}).should.be.rejectedWith(EVM_REVERT)
+            })
+            it('rejects unauthorised order', async () => {
+              await exchange.cancelOrder('1', {from: user2}).should.be.rejectedWith(EVM_REVERT)
+            })
           })
       })
   })
