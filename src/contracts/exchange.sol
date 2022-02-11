@@ -45,6 +45,16 @@ contract Exchange {
         uint amountGive,
         uint timestamp
     );
+    event Trade(
+        uint id,
+        address user,
+        address tokenGet,
+        uint amountGet,
+        address tokenGive,
+        uint amountGive,
+        address userFill,
+        uint timestamp
+    );
 
     //struct
     struct _Order {
@@ -111,6 +121,29 @@ contract Exchange {
         orderCancelled[_id] = true;
         emit Cancel(_order.id, msg.sender, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive, block.timestamp);
 
+    }
+
+    function fillOrder(uint256 _id) public {
+        _Order storage _order = orders[_id];
+        _trade(_order.id, order.user, order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
+
+        //emit trade event
+    }
+
+    function _trade( uint _orderId, address _user, address _tokenGet, uint _amountGet, address _tokenGive, uint _amountGive) internal {
+        uint256 _feeAmount = _amountGet.mul(feePercent).div(100);
+
+
+        
+        tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
+        tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
+        tokens[_tokenGet][feeAccount] = tokens[_tokenGive][feeAccount].add(feeAccount);
+        tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
+        tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGet);
+
+              //create the trade
+        //charge fees
+        //mark the order as filled
     }
 }
 
