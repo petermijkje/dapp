@@ -48,7 +48,7 @@ contract Exchange {
         uint timestamp
     );
     event Trade(
-        uint id,
+        uint orderId,
         address user,
         address tokenGet,
         uint amountGet,
@@ -130,8 +130,8 @@ contract Exchange {
         require(!orderFilled[_id]);
         require(!orderCancelled[_id]);
         _Order storage _order = orders[_id];
-        _trade(_order.id, order.user, order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
-        orderFilled[_orderId] = true;
+        _trade(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
+        orderFilled[_order.id] = true;
         //emit trade event
     }
 
@@ -142,14 +142,14 @@ contract Exchange {
         
         tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
         tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
-        tokens[_tokenGet][feeAccount] = tokens[_tokenGive][feeAccount].add(feeAccount);
+        tokens[_tokenGet][feeAccount] = tokens[_tokenGive][feeAccount].add(_feeAmount);
         tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
         tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGet);
 
               //create the trade
         //charge fees
         //mark the order as filled
-        emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp)
+        emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp);
     }
 }
 

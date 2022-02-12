@@ -244,8 +244,39 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
         // make order
         await exchange.depositEther({from: user1, value: ether(1)})
 
+        await token.transfer(user2, tokens(100), {from: deployer})
+
+        await token.approve(exchange.address, tokens(2), {from: user2})
+
+        await exchange.depositToken(token.address, tokens(2), {from: user2})
+
         await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), {from: user1})
       })
+
+      describe("filling orders", async () => {
+        let result 
+
+        describe("success", async () => {
+          beforeEach(async () => {
+              //user2 fills the order
+              result = await exchange.fillOrder('1', {from: user2})
+          })
+          it("executes trade and charges fee", async () => {
+            let balance;
+
+            balance = await exchange.balanceOf(token.address, user1)
+            balance.toString().should.equal(tokens(1).toString(), "user1 received tokens")
+          })
+        })
+      })
+
+
+
+
+
+
+
+
 
       describe("Cancelling orders", async () => {
           let result;
