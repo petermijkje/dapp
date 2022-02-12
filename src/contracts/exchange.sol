@@ -23,6 +23,8 @@ contract Exchange {
     mapping(uint256 => _Order) public orders;
     uint256 public orderCount;
     mapping(uint256 => bool) public orderCancelled;
+    mapping(uint256 => bool) public orderFilled;
+
 
     //events
     event Deposit(address token, address user, uint256 amount, uint256 balance);
@@ -124,9 +126,12 @@ contract Exchange {
     }
 
     function fillOrder(uint256 _id) public {
+        require(_id > 0 && _id <= orderCount);
+        require(!orderFilled[_id]);
+        require(!orderCancelled[_id]);
         _Order storage _order = orders[_id];
         _trade(_order.id, order.user, order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
-
+        orderFilled[_orderId] = true;
         //emit trade event
     }
 
@@ -144,6 +149,7 @@ contract Exchange {
               //create the trade
         //charge fees
         //mark the order as filled
+        emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp)
     }
 }
 
