@@ -268,15 +268,11 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
             balance.toString().should.equal(tokens(1).toString(), "user1 received tokens")
           })
         })
+        describe("failure", async () => {
+            let balance;
+
+        })
       })
-
-
-
-
-
-
-
-
 
       describe("Cancelling orders", async () => {
           let result;

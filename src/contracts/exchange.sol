@@ -146,7 +146,7 @@ contract Exchange {
         tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
         tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGet);
 
-              //create the trade
+        //create the trade
         //charge fees
         //mark the order as filled
         emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp);
