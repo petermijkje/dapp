@@ -154,7 +154,6 @@ contract Exchange {
 }
 
 //to do
-
 // deposit ether
 // withdraw ether
 // deposit ether
