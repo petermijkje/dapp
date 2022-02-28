@@ -11,12 +11,31 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            // Request account access if needed
+            await ethereum.enable();
+            // Acccounts now exposed
+            web3.eth.sendTransaction({/* ... */});
+        } catch (error) {
+            // User denied account access...
+        }
+    }
+
+
+    if (typeof window.ethereum !== 'undefined') {
+      console.log('MetaMask is installed!');
+    }
     const web3 = new Web3(window.ethereum)
     const networkId = await web3.eth.net.getId()
-    const accounts = await web3.eth.getAccounts()
-    const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
-    const totalSupply = await token.methods.totalSupply().call()
-    console.log("totalSupply", totalSupply)
+    console.log(networkId)
+    const accounts = await web3.eth.getAccounts();
+    console.log(accounts)
+    // const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
+    // const totalSupply = await token.methods.totalSupply().call()
+    // console.log("totalSupply", totalSupply)
+    // console.log("address", Token.networks[networkId].address)
   }
 
   render() {

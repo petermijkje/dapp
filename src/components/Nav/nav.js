@@ -13,7 +13,7 @@ function Nav() {
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text className="nav-bar bg-dark text-white">
-                Signed in as: <a href="#login" className="nav-bar bg-dark text-white">Mark Otto</a>
+                Signed in as: <a href="#login" className="nav-bar bg-dark text-white">Peter Sarll</a>
               </Navbar.Text>
             </Navbar.Collapse>
           </Container>
