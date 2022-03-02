@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useState, useEffect  } from 'react';
 import './App.css';
 import Web3 from 'web3'
 import Token from '../abis/Token.json'
@@ -6,21 +6,23 @@ import Nav from './Nav/nav.js';
 
 
 class App extends Component {
-  componentWillMount() {
+  componentDidMount() {
 
     this.loadBlockchainData()
   }
-
-  async loadBlockchainData() {
-    // const web3 = new Web3(window.ethereum)
-    const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545') 
+  
+   async loadBlockchainData() {
+    const web3 = new Web3(window.ethereum)
+    // const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545') 
     window.ethereum.enable().catch(error => {
       console.log(error) 
     })
-
+   
     const network = await web3.eth.net.getNetworkType()
     console.log("network", network)
-    // window.location.reload();
+    const accounts = await web3.eth.getAccounts()
+    console.log("accounts", accounts)
+
 
   }
 
@@ -28,7 +30,6 @@ class App extends Component {
     return (
       <div>
         <Nav />
-
         
         {/*
         This is originally what the nav bar is but want to find a better one. 
