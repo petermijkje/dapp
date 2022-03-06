@@ -1,43 +1,45 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import "./App.css";
-import Web3 from "web3";
-import Token from "../abis/Token.json";
+// import Token from "../abis/Token.json";
 import Nav from "./Nav/nav.js";
+import {loadWeb3} from '../store/interactions'
+import {connect} from 'react-redux'
 
 class App extends Component {
   componentDidMount() {
-    this.loadBlockchainData();
+    this.loadBlockchainData(this.props.dispatch
+    );
   }
 
-  async loadBlockchainData() {
-    const web3 = new Web3(window.ethereum);
-    // const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545')
+  async loadBlockchainData(dispatch) {
+    const web3 = loadWeb3(dispatch);
+
     window.ethereum.enable().catch((error) => {
       console.log(error);
     });
 
-    const network = await web3.eth.net.getNetworkType();
-    const networkID = await web3.eth.net.getId();
-    console.log("network ID", networkID);
-    console.log("network", network);
+    // const network = await web3.eth.net.getNetworkType();
+    // const networkID = await web3.eth.net.getId();
+    // console.log("network ID", networkID);
+    // console.log("network", network);
 
-    const accounts = await web3.eth.getAccounts();
-    console.log("accounts", accounts);
-    console.log("Token", Token);
+    // const accounts = await web3.eth.getAccounts();
+    // console.log("accounts", accounts);
+    // console.log("Token", Token);
 
-    const abi = Token.abi;
-    console.log("abi", abi);
+    // const abi = Token.abi;
+    // console.log("abi", abi);
 
-    const networks = Token.networks;
-    console.log("network", networks);
-    console.log("Network Data", Token.networks[networkID]);
-    console.log("Address", Token.networks[networkID].address);
+    // const networks = Token.networks;
+    // console.log("network", networks);
+    // console.log("Network Data", Token.networks[networkID]);
+    // console.log("Address", Token.networks[networkID].address);
 
-    const token = new web3.eth.Contract(Token.abi, Token.networks[networkID].address)
-    console.log("token", token)
+    // const token = new web3.eth.Contract(Token.abi, Token.networks[networkID].address)
+    // console.log("token", token)
 
-    const totalSupply = await token.methods.totalSupply().call()
-    console.log("total supply", totalSupply)
+    // const totalSupply = await token.methods.totalSupply().call()
+    // console.log("total supply", totalSupply)
 
   }
 
@@ -157,4 +159,10 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps)(App)

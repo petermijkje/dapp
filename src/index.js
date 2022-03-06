@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from "./store/configureStore";
-import { render } from "react-dom";
 import { Provider } from "react-redux";
 import App from "./components/App";
 import "bootstrap/dist/css/bootstrap.css";
 import reportWebVitals from "./reportWebVitals";
-import { logger } from "redux-logger";
 
 
 ReactDOM.render(
