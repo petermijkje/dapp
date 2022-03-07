@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 // import Token from "../abis/Token.json";
 import Nav from "./Nav/nav.js";
-import {loadWeb3} from '../store/interactions'
 import {connect} from 'react-redux'
+import {loadWeb3, loadAccount} from '../store/interactions'
 
 class App extends Component {
   componentDidMount() {
@@ -13,13 +13,14 @@ class App extends Component {
 
   async loadBlockchainData(dispatch) {
     const web3 = loadWeb3(dispatch);
+    // const network = await web3.eth.net.getNetworkType();
+    // const networkID = await web3.eth.net.getId();
+    const accounts = await loadAccount(web3, dispatch);
 
     window.ethereum.enable().catch((error) => {
       console.log(error);
     });
 
-    // const network = await web3.eth.net.getNetworkType();
-    // const networkID = await web3.eth.net.getId();
     // console.log("network ID", networkID);
     // console.log("network", network);
 

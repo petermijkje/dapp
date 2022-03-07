@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@metamask/legacy-web3": "^2.0.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@truffle/hdwallet-provider": "1.1.0",
     "apexcharts": "3.6.3",
