@@ -16,6 +16,7 @@ class App extends Component {
     // const network = await web3.eth.net.getNetworkType();
     // const networkID = await web3.eth.net.getId();
     const accounts = await loadAccount(web3, dispatch);
+    const tokens = await loadToken(web3, networkId, dispatch)
 
     window.ethereum.enable().catch((error) => {
       console.log(error);
