@@ -4,45 +4,20 @@ import "./App.css";
 import Nav from "./Nav/nav.js";
 import {connect} from 'react-redux'
 import {loadWeb3, loadAccount, loadToken} from '../store/interactions'
+import Web3 from "web3";
+
 
 class App extends Component {
-  componentDidMount() {
-    this.loadBlockchainData(this.props.dispatch
-    );
+  componentWillMount() {
+    this.loadBlockchainData(this.props.dispatch)
   }
 
   async loadBlockchainData(dispatch) {
-    const web3 = loadWeb3(dispatch);
-    // const network = await web3.eth.net.getNetworkType();
-    const networkId = await web3.eth.net.getId();
-    const accounts = await loadAccount(web3, dispatch);
-    const tokens = await loadToken(web3, networkId, dispatch)
-
-    window.ethereum.enable().catch((error) => {
-      console.log(error);
-    });
-
-    // console.log("network ID", networkID);
-    // console.log("network", network);
-
-    // const accounts = await web3.eth.getAccounts();
-    // console.log("accounts", accounts);
-    // console.log("Token", Token);
-
-    // const abi = Token.abi;
-    // console.log("abi", abi);
-
-    // const networks = Token.networks;
-    // console.log("network", networks);
-    // console.log("Network Data", Token.networks[networkID]);
-    // console.log("Address", Token.networks[networkID].address);
-
-    // const token = new web3.eth.Contract(Token.abi, Token.networks[networkID].address)
-    // console.log("token", token)
-
-    // const totalSupply = await token.methods.totalSupply().call()
-    // console.log("total supply", totalSupply)
-
+    const web3 = await loadWeb3(dispatch)
+    const networkId = await web3.eth.net.getId()
+    const accounts = await loadAccount(web3, dispatch)
+    const token = await loadToken(web3, networkId, dispatch)
+    // const exchange = await loadExchange(web3, networkId, dispatch)
   }
 
   render() {
