@@ -5,7 +5,7 @@ import Nav from "./Nav/nav.js";
 import {connect} from 'react-redux'
 import {loadWeb3, loadAccount, loadToken, loadExchange } from '../store/interactions'
 import Web3 from "web3";
-
+import {accountSelector} from '../store/selectors'
 
 class App extends Component {
   componentWillMount() {
@@ -21,6 +21,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props.account)
     return (
       <div>
         <Nav />
@@ -113,7 +114,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-
+    account: accountSelector(state)
   }
 }
 
