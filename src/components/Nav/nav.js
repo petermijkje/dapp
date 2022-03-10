@@ -1,10 +1,12 @@
-import React from "react";
+import React, {Component} from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.css';
+import {connect} from 'react-redux'
+import {accountSelector} from '../../store/selectors'
 
-
-function Nav() {
+class Nav extends Component {
+  render(){
   return (
     <div className="nav-bar bg-dark text-white">
       <Navbar>
@@ -13,7 +15,12 @@ function Nav() {
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text className="nav-bar bg-dark text-white">
-                Signed in as: <a href="#login" className="nav-bar bg-dark text-white">Peter Sarll</a>
+                Signed in as: 
+                <a 
+                  href={`https://etherscan.io/address/${this.props.account}`} 
+                  className="nav-bar bg-dark text-white" 
+                >
+                {this.props.account}}</a>
               </Navbar.Text>
             </Navbar.Collapse>
           </Container>
@@ -21,5 +28,11 @@ function Nav() {
     </div> 
   );
 }
+}
+function mapStateToProps(state) {
+  return {
+    account: accountSelector(state)
+  }
+}
 
-export default Nav;
+export default connect(mapStateToProps)(Nav)

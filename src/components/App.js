@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.account)
     return (
       <div>
         <Nav />
@@ -114,7 +113,6 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    account: accountSelector(state)
   }
 }
 
