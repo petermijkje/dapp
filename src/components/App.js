@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {loadWeb3, loadAccount, loadToken, loadExchange } from '../store/interactions'
 import Web3 from "web3";
 import {accountSelector} from '../store/selectors'
+import {contractsLoadedSelector} from '../store/selectors'
 
 class App extends Component {
   componentWillMount() {
@@ -18,21 +19,33 @@ class App extends Component {
     const networkId = await web3.eth.net.getId()
     const accounts = await loadAccount(web3, dispatch)
     const token = await loadToken(web3, networkId, dispatch)
+
+    if(!token){
+      window.alert('token smart contract not detected on the current network. Please select another network with Metamask.')
+      return 
+    }
     const exchange = await loadExchange(web3, networkId, dispatch)
+
+    if(!exchange){
+      window.alert('Exchange not detected on the current network. Please select another network with Metamask.')
+      return 
+    }
   }
 
   render() {
     return (
       <div>
         <Nav />
-        <Content />
+        {this.props.contractsLoaded ? <Content /> : <div className="content"></div>}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
+  console.log('contractloadedselector',contractsLoadedSelector(state))
   return {
+    contractsLoaded: contractsLoadedSelector(state)
   }
 }
 
