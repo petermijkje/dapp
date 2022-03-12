@@ -52,3 +52,7 @@ export const loadExchange = async (web3, networkId, dispatch) => {
     return null
   }
 }
+
+export const loadAllOrders = async () => {
+    
+}
