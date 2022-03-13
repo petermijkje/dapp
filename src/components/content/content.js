@@ -3,9 +3,19 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from 'react-redux'
-import {accountSelector} from '../../store/selectors'
+import {accountSelector, exchangeSelector} from '../../store/selectors'
+import {loadWeb3, loadAccount, loadToken, loadExchange, loadAllOrders } from '../../store/interactions'
+
 
 class Content extends Component {
+componentWillMount() {
+    this.loadBlockchainData(this.props.dispatch)
+  }
+
+  async loadBlockchainData(dispatch) {
+      await loadAllOrders(this.props.exchange, dispatch)
+  }
+
   render(){
   return (
     <div>
@@ -97,7 +107,7 @@ class Content extends Component {
 }
 function mapStateToProps(state) {
   return {
-    account: accountSelector(state)
+    exchange: exchangeSelector(state)
   }
 }
 

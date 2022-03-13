@@ -53,6 +53,17 @@ export const loadExchange = async (web3, networkId, dispatch) => {
   }
 }
 
-export const loadAllOrders = async () => {
-    
+export const loadAllOrders = async (exchange, dispatch) => {
+    // fetch cancelled orders with the "cancel" event stream"
+    const cancelStream = await exchange.getPastEvents('Cancel', {fromBlock: 0, toBlock: 'latest'})
+    const cancelledOrders = cancelStream.map((event) => event.returnValues)
+
+    console.log(cancelStream)
+
+
+        // fetch filled orders with the "fill" event stream"
+
+
+        // fetch all orders with the "order" event stream"
+
 }
