@@ -3,7 +3,9 @@ import {
     web3AccountLoaded,  
     tokenLoaded, 
     exchangeLoaded, 
-    cancelledOrdersLoaded
+    cancelledOrdersLoaded,
+    allOrdersLoaded,
+    filledOrdersLoaded
 } from './actions'
 import Web3 from "web3";
 import Token from '../abis/Token.json'
@@ -66,8 +68,15 @@ export const loadAllOrders = async (exchange, dispatch) => {
     dispatch(cancelledOrdersLoaded(cancelledOrders))
 
     // fetch filled orders with the "fill" event stream"
+    const tradeStream = await exchange.getPastEvents('Trade', {fromBlock: 0, toBlock: 'latest'})
+    const filledOrders = tradeStream.map((event) => event.returnValues)
+
+    dispatch(filledOrdersLoaded(filledOrders))
 
 
     // fetch all orders with the "order" event stream"
+    const orderStream = await exchange.getPastEvents('Order', {fromBlock: 0, toBlock: 'latest'})
+    const allOrders = orderStream.map((event) => event.returnValues)
 
+    dispatch(allOrdersLoaded(allOrders))
 }
