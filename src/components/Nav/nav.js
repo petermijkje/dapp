@@ -20,7 +20,7 @@ class Nav extends Component {
                   href={`https://etherscan.io/address/${this.props.account}`} 
                   className="nav-bar bg-dark text-white" 
                 >
-                {this.props.account}}</a>
+                {this.props.account}</a>
               </Navbar.Text>
             </Navbar.Collapse>
           </Container>
