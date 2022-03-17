@@ -19,3 +19,30 @@ export const contractsLoadedSelector = createSelector(
     exchangeLoaded,
     (tl,el) => (tl && el)
 )
+
+const filledOrdersLoaded = state => get(state, 'exchange.filledOrders.data', false)
+export const filledOrdersLoadedSelector = createSelector(filledOrdersLoaded, loaded => loaded)
+
+const filledOrders = state => get(state, 'exchange.filledOrders.data', [])
+export const filledOrdersSelector = createSelector(
+    filledOrders,
+    (orders => {
+        // decorate the order
+
+        // sort orders by date descending for display
+        orders = orders.sort((a, b) => b.timestamp - a.timestamp)
+        console.log(orders)
+    })
+)
+
+const decorateFilledOrders = (orders) => {
+    return (
+        orders.map((order)=> {
+        order = decorateOrder(order)
+        })
+    )
+}
+
+const decorateOrder = (order) => {
+    //
+}
