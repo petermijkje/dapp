@@ -38,11 +38,25 @@ export const filledOrdersSelector = createSelector(
 const decorateFilledOrders = (orders) => {
     return (
         orders.map((order)=> {
-        order = decorateOrder(order)
+        return order = decorateOrder(order)
         })
     )
 }
 
 const decorateOrder = (order) => {
-    //
+    let etherAmount
+    let tokenAmount
+
+    if (order.tokenGive = "0x0000000000000000000000000000000000000000"){
+        etherAmount = order.amountGive
+        tokenAmount = order.amountGet
+    } else {
+        etherAmount = order.amountGet
+        tokenAmount = order.amountGive
+    }
+    return ({
+        ...order,
+        etherAmount: etherAmount,
+        tokenAmount: tokenAmount
+    })
 }
