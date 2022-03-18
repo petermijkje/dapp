@@ -1,5 +1,6 @@
 import {get} from 'lodash'
 import { createSelector } from 'reselect'
+import { ETHER_ADDRESS, tokens, ether} from '../helpers.js'
 
 const account = state => get(state, 'web3.account')
 export const accountSelector = createSelector(account, a => a)
@@ -20,24 +21,24 @@ export const contractsLoadedSelector = createSelector(
     (tl,el) => (tl && el)
 )
 
-const filledOrdersLoaded = state => get(state, 'exchange.filledOrders.data', false)
+const filledOrdersLoaded = state => get(state, 'exchange.filledOrders.loaded', false)
 export const filledOrdersLoadedSelector = createSelector(filledOrdersLoaded, loaded => loaded)
 
 const filledOrders = state => get(state, 'exchange.filledOrders.data', [])
 export const filledOrdersSelector = createSelector(
     filledOrders,
-    (orders => {
+    (orders) => {
         // decorate the order
 
         // sort orders by date descending for display
         orders = orders.sort((a, b) => b.timestamp - a.timestamp)
         console.log(orders)
-    })
+    }
 )
 
 const decorateFilledOrders = (orders) => {
     return (
-        orders.map((order)=> {
+        orders.map((order) => {
         return order = decorateOrder(order)
         })
     )
@@ -47,7 +48,7 @@ const decorateOrder = (order) => {
     let etherAmount
     let tokenAmount
 
-    if (order.tokenGive = "0x0000000000000000000000000000000000000000"){
+    if (order.tokenGive == ETHER_ADDRESS){
         etherAmount = order.amountGive
         tokenAmount = order.amountGet
     } else {
@@ -56,7 +57,7 @@ const decorateOrder = (order) => {
     }
     return ({
         ...order,
-        etherAmount: etherAmount,
-        tokenAmount: tokenAmount
+        etherAmount: ether(etherAmount),
+        tokenAmount: tokens(tokenAmount)
     })
 }
