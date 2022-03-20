@@ -44,7 +44,7 @@ const decorateFilledOrders = (orders) => {
     )
 }
 
-let tokenPrice = = (etherAmount)
+let tokenPrice = (etherAmount/ tokenAmount)
 
 const decorateOrder = (order) => {
     let etherAmount
