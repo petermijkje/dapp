@@ -45,6 +45,8 @@ const decorateFilledOrders = (orders) => {
 }
 
 let tokenPrice = (etherAmount/ tokenAmount)
+const precision = 100000
+tokenPrice = Math.round(tokenPrice * precision) / precision
 
 const decorateOrder = (order) => {
     let etherAmount
